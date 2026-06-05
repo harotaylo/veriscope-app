@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: #080c12;
+  color: #d4d8e0;
+  line-height: 1.6;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a2535;
+  border-radius: 3px;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+input, select, textarea {
+  font-family: 'Courier New', monospace;
+}
+
+a {
+  color: #4a9eff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
