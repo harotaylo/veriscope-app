@@ -10,6 +10,7 @@ export default function Database() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLevel, setSelectedLevel] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedTitle, setSelectedTitle] = useState('');
   const [selectedCase, setSelectedCase] = useState(null);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export default function Database() {
 
   useEffect(() => {
     filterCases();
-  }, [cases, searchTerm, selectedCategory, selectedLevel, selectedStatus]);
+  }, [cases, searchTerm, selectedCategory, selectedLevel, selectedStatus, selectedTitle]);
 
   const fetchCases = async () => {
     setLoading(true);
@@ -61,11 +62,16 @@ export default function Database() {
       filtered = filtered.filter(c => c.case_status === selectedStatus);
     }
 
+    if (selectedTitle) {
+      filtered = filtered.filter(c => c.title === selectedTitle);
+    }
+
     setFilteredCases(filtered);
   };
 
   const categories = [...new Set(cases.map(c => c.category).filter(Boolean))];
   const levels = [...new Set(cases.map(c => c.level).filter(Boolean))];
+  const titles = [...new Set(cases.map(c => c.title).filter(Boolean))].sort();
 
   return (
     <div className="database">
@@ -131,6 +137,17 @@ export default function Database() {
           <option value="Parole / Probation">Parole / Probation</option>
           <option value="Closed / Disposed">Closed / Disposed</option>
         </select>
+
+        <select
+          value={selectedTitle}
+          onChange={(e) => setSelectedTitle(e.target.value)}
+          className="filter-select"
+        >
+          <option value="">All Titles</option>
+          {titles.map(title => (
+            <option key={title} value={title}>{title}</option>
+          ))}
+        </select>
       </div>
 
       {loading ? (
@@ -167,7 +184,7 @@ export default function Database() {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setSelectedCase(null)}>✕</button>
             <h2>{selectedCase.full_name}</h2>
-            <p><strong>Position:</strong> {selectedCase.position}</p>
+            <p><strong>Title:</strong> {selectedCase.title}</p>
             <p><strong>Agency:</strong> {selectedCase.agency_or_office}</p>
             <p><strong>Location:</strong> {selectedCase.location}</p>
             <p><strong>Charges:</strong> {selectedCase.specific_charges}</p>
@@ -182,3 +199,5 @@ export default function Database() {
     </div>
   );
 }
+
+        
