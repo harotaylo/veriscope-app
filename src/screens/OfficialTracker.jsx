@@ -5,7 +5,6 @@ import '../styles/OfficialTracker.css';
 export default function OfficialTracker() {
   const [officials, setOfficials] = useState([]);
   const [csamCases, setCsamCases] = useState([]);
-  const [stateProfile, setStateProfile] = useState(null);
   const [rankings, setRankings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('trackers');
@@ -28,13 +27,6 @@ export default function OfficialTracker() {
       const { data: csamData } = await supabase
         .rpc('get_csam_by_state', { state_code: selectedState });
       setCsamCases(csamData || []);
-
-      const { data: profileData } = await supabase
-        .from('state_profiles')
-        .select('*')
-        .eq('state', selectedState)
-        .single();
-      setStateProfile(profileData);
 
       const { data: rankingsData } = await supabase
         .from('official_rankings')
@@ -75,12 +67,6 @@ export default function OfficialTracker() {
           onClick={() => setActiveTab('rankings')}
         >
           Rankings
-        </button>
-        <button
-          className={`tab ${activeTab === 'states' ? 'active' : ''}`}
-          onClick={() => setActiveTab('states')}
-        >
-          State Profiles
         </button>
       </div>
 
@@ -228,67 +214,7 @@ export default function OfficialTracker() {
           )}
         </div>
       )}
-
-      {activeTab === 'states' && (
-        <div className="tracker-section">
-          <div className="tracker-controls">
-            <select
-              value={selectedState}
-              onChange={(e) => setSelectedState(e.target.value)}
-              className="filter-select"
-            >
-              <option value="SC">South Carolina</option>
-              <option value="CA">California</option>
-              <option value="TX">Texas</option>
-              <option value="FL">Florida</option>
-              <option value="NY">New York</option>
-            </select>
-          </div>
-
-          {loading ? (
-            <p className="loading">Loading state profile...</p>
-          ) : stateProfile ? (
-            <div className="state-profile-card">
-              <h2>{selectedState} State Profile</h2>
-              <div className="profile-stats">
-                <div className="stat">
-                  <span className="stat-value">{stateProfile.total_cases}</span>
-                  <span className="stat-label">Total Cases</span>
-                </div>
-                <div className="stat">
-                  <span className="stat-value">{stateProfile.unique_officials}</span>
-                  <span className="stat-label">Unique Officials</span>
-                </div>
-                <div className="stat csam">
-                  <span className="stat-value">{stateProfile.csam_cases}</span>
-                  <span className="stat-label">🚨 CSAM Cases</span>
-                </div>
-                <div className="stat">
-                  <span className="stat-value">{stateProfile.corruption_cases}</span>
-                  <span className="stat-label">Corruption Cases</span>
-                </div>
-              </div>
-              
-              <div className="official-breakdown">
-                <h3>By Official Type</h3>
-                <div className="breakdown-stats">
-                  <p>👨‍⚖️ Judges: {stateProfile.judge_cases}</p>
-                  <p>🏛️ Politicians: {stateProfile.politician_cases}</p>
-                  <p>👮 Police: {stateProfile.police_cases}</p>
-                </div>
-              </div>
-
-              {stateProfile.most_recent && (
-                <p className="most-recent">
-                  Most Recent Case: {new Date(stateProfile.most_recent).toLocaleDateString()}
-                </p>
-              )}
-            </div>
-          ) : (
-            <p className="no-data">No data for {selectedState}</p>
-          )}
-        </div>
-      )}
     </div>
   );
 }
+                
