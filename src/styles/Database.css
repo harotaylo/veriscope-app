@@ -95,14 +95,31 @@
   font-size: 0.85rem;
 }
 
+.card-badges {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .category-badge {
   display: inline-block;
   background: #ff4444;
   color: #fff;
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
-  font-size: 0.8rem;
-  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge {
+  display: inline-block;
+  background: #ff8800;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .loading {
@@ -154,6 +171,7 @@
   color: #e0e0e0;
   line-height: 1.6;
   margin-bottom: 1rem;
+  font-size: 0.95rem;
 }
 
 .modal-content a {
@@ -181,4 +199,28 @@
 
 .modal-close:hover {
   background: #ff8888;
+}
+
+@media (max-width: 768px) {
+  .database {
+    padding: 1rem;
+  }
+
+  .database-filters {
+    flex-direction: column;
+  }
+
+  .search-input,
+  .filter-select {
+    width: 100%;
+  }
+
+  .cases-container {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
 }
