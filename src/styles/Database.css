@@ -83,6 +83,13 @@
   font-weight: 600;
 }
 
+.case-card .position {
+  color: #999;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
 .case-card .location {
   color: #999;
   margin: 0.5rem 0;
@@ -115,6 +122,16 @@
 .status-badge {
   display: inline-block;
   background: #ff8800;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.official-type-badge {
+  display: inline-block;
+  background: #8844ff;
   color: #fff;
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
