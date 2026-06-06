@@ -1,0 +1,82 @@
+.heatmap {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.heatmap-header {
+  margin-bottom: 2rem;
+}
+
+.heatmap-header h2 {
+  color: #ff4444;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.heatmap-header p {
+  color: #999;
+  margin: 0;
+}
+
+.heatmap-container {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 2rem;
+  min-height: 400px;
+}
+
+.location-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.location-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.location-name {
+  color: #e0e0e0;
+  min-width: 150px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.location-bar {
+  flex: 1;
+  background: #0a0a0a;
+  height: 30px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+.location-fill {
+  background: linear-gradient(90deg, #ff4444, #ff8888);
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.location-count {
+  color: #ff4444;
+  font-weight: bold;
+  min-width: 40px;
+  text-align: right;
+}
+
+.loading {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+}
+
+.no-data {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+}
