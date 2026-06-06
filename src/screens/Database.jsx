@@ -9,6 +9,7 @@ export default function Database() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLevel, setSelectedLevel] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedCase, setSelectedCase] = useState(null);
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export default function Database() {
 
   useEffect(() => {
     filterCases();
-  }, [cases, searchTerm, selectedCategory, selectedLevel]);
+  }, [cases, searchTerm, selectedCategory, selectedLevel, selectedStatus]);
 
   const fetchCases = async () => {
     setLoading(true);
@@ -54,6 +55,10 @@ export default function Database() {
 
     if (selectedLevel) {
       filtered = filtered.filter(c => c.level === selectedLevel);
+    }
+
+    if (selectedStatus) {
+      filtered = filtered.filter(c => c.case_status === selectedStatus);
     }
 
     setFilteredCases(filtered);
@@ -99,6 +104,33 @@ export default function Database() {
             <option key={level} value={level}>{level}</option>
           ))}
         </select>
+
+        <select
+          value={selectedStatus}
+          onChange={(e) => setSelectedStatus(e.target.value)}
+          className="filter-select"
+        >
+          <option value="">All Statuses</option>
+          <option value="Under Investigation">Under Investigation</option>
+          <option value="Arrested / Detained">Arrested / Detained</option>
+          <option value="Booked">Booked</option>
+          <option value="Charges Filed">Charges Filed</option>
+          <option value="Indicted">Indicted</option>
+          <option value="Arraigned">Arraigned</option>
+          <option value="Bail/Bond Set">Bail/Bond Set</option>
+          <option value="Discovery">Discovery</option>
+          <option value="Pre-Trial Motions">Pre-Trial Motions</option>
+          <option value="Diversion / Deferred Adjudication">Diversion / Deferred Adjudication</option>
+          <option value="Awaiting Trial">Awaiting Trial</option>
+          <option value="Plea Bargain Reached">Plea Bargain Reached</option>
+          <option value="Dismissed">Dismissed</option>
+          <option value="Acquitted">Acquitted</option>
+          <option value="Convicted">Convicted</option>
+          <option value="Sentenced">Sentenced</option>
+          <option value="Appealing">Appealing</option>
+          <option value="Parole / Probation">Parole / Probation</option>
+          <option value="Closed / Disposed">Closed / Disposed</option>
+        </select>
       </div>
 
       {loading ? (
@@ -118,7 +150,12 @@ export default function Database() {
                 <p className="title">{caseItem.title}</p>
                 <p className="location">📍 {caseItem.location}</p>
                 <p className="date">Charged: {new Date(caseItem.date_charged).toLocaleDateString()}</p>
-                <span className="category-badge">{caseItem.category}</span>
+                <div className="card-badges">
+                  <span className="category-badge">{caseItem.category}</span>
+                  {caseItem.case_status && (
+                    <span className="status-badge">{caseItem.case_status}</span>
+                  )}
+                </div>
               </div>
             ))
           )}
@@ -135,6 +172,8 @@ export default function Database() {
             <p><strong>Location:</strong> {selectedCase.location}</p>
             <p><strong>Charges:</strong> {selectedCase.specific_charges}</p>
             <p><strong>Category:</strong> {selectedCase.category}</p>
+            <p><strong>Status:</strong> {selectedCase.case_status || 'N/A'}</p>
+            <p><strong>Date Charged:</strong> {new Date(selectedCase.date_charged).toLocaleDateString()}</p>
             <p><strong>Details:</strong> {selectedCase.details}</p>
             <p><strong>Source:</strong> <a href={selectedCase.source_url} target="_blank" rel="noopener noreferrer">{selectedCase.source_url}</a></p>
           </div>
@@ -143,4 +182,3 @@ export default function Database() {
     </div>
   );
 }
-
