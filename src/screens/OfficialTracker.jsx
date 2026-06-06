@@ -11,28 +11,24 @@ export default function OfficialTracker() {
   const [activeTab, setActiveTab] = useState('trackers');
   const [selectedOfficialType, setSelectedOfficialType] = useState('Judge');
   const [selectedState, setSelectedState] = useState('SC');
-  const [selectedAbuseType, setSelectedAbuseType] = useState('CSAM');
 
   useEffect(() => {
     fetchData();
-  }, [selectedOfficialType, selectedState, selectedAbuseType]);
+  }, [selectedOfficialType, selectedState]);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Fetch officials by type
       const { data: officialsData } = await supabase
         .from('official_summary')
         .select('*')
         .eq('official_type', selectedOfficialType);
       setOfficials(officialsData || []);
 
-      // Fetch CSAM cases by state
       const { data: csamData } = await supabase
         .rpc('get_csam_by_state', { state_code: selectedState });
       setCsamCases(csamData || []);
 
-      // Fetch state profile
       const { data: profileData } = await supabase
         .from('state_profiles')
         .select('*')
@@ -40,7 +36,6 @@ export default function OfficialTracker() {
         .single();
       setStateProfile(profileData);
 
-      // Fetch rankings
       const { data: rankingsData } = await supabase
         .from('official_rankings')
         .select('*')
@@ -62,7 +57,6 @@ export default function OfficialTracker() {
         <p>Document when public officials abuse their power</p>
       </div>
 
-      {/* Tab Navigation */}
       <div className="tracker-tabs">
         <button
           className={`tab ${activeTab === 'trackers' ? 'active' : ''}`}
@@ -90,7 +84,6 @@ export default function OfficialTracker() {
         </button>
       </div>
 
-      {/* TRACKERS TAB */}
       {activeTab === 'trackers' && (
         <div className="tracker-section">
           <div className="tracker-controls">
@@ -125,7 +118,7 @@ export default function OfficialTracker() {
                     <p className="state">📍 {official.state}</p>
                     
                     <div className="abuse-type">
-                      <span className={`badge ${official.abuse_of_power_type?.toLowerCase().replace(/ /g, '-')}`}>
+                      <span className="badge">
                         {official.abuse_of_power_type}
                       </span>
                     </div>
@@ -136,12 +129,6 @@ export default function OfficialTracker() {
                       </p>
                       {official.csam_cases > 0 && (
                         <p className="csam-badge">🚨 {official.csam_cases} CSAM</p>
-                      )}
-                      {official.corruption_cases > 0 && (
-                        <p>💰 {official.corruption_cases} Corruption</p>
-                      )}
-                      {official.civil_rights_cases > 0 && (
-                        <p>⚖️ {official.civil_rights_cases} Civil Rights</p>
                       )}
                     </div>
 
@@ -156,7 +143,6 @@ export default function OfficialTracker() {
         </div>
       )}
 
-      {/* CSAM CASES TAB */}
       {activeTab === 'csam' && (
         <div className="tracker-section">
           <div className="tracker-controls">
@@ -170,7 +156,6 @@ export default function OfficialTracker() {
               <option value="TX">Texas</option>
               <option value="FL">Florida</option>
               <option value="NY">New York</option>
-              {/* Add more states */}
             </select>
             <span className="csam-warning">🚨 Child Sexual Abuse Material Cases</span>
           </div>
@@ -203,7 +188,6 @@ export default function OfficialTracker() {
         </div>
       )}
 
-      {/* RANKINGS TAB */}
       {activeTab === 'rankings' && (
         <div className="tracker-section">
           <div className="tracker-controls">
@@ -233,7 +217,7 @@ export default function OfficialTracker() {
                       <h4>{official.full_name}</h4>
                       <p>{official.position}</p>
                     </div>
-                    <span className={`badge ${official.abuse_of_power_type?.toLowerCase().replace(/ /g, '-')}`}>
+                    <span className="badge">
                       {official.abuse_of_power_type}
                     </span>
                     <span className="case-count">{official.case_count} cases</span>
@@ -245,7 +229,6 @@ export default function OfficialTracker() {
         </div>
       )}
 
-      {/* STATE PROFILES TAB */}
       {activeTab === 'states' && (
         <div className="tracker-section">
           <div className="tracker-controls">
@@ -308,3 +291,4 @@ export default function OfficialTracker() {
       )}
     </div>
   );
+}
