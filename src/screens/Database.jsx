@@ -41,15 +41,26 @@ export default function Database() {
     }
   };
 
+  const getFullName = (caseItem) => {
+    if (caseItem.full_name) return caseItem.full_name;
+    if (caseItem.first_name && caseItem.last_name) {
+      return `${caseItem.first_name} ${caseItem.last_name}`;
+    }
+    return 'Unknown Official';
+  };
+
   const filterCases = () => {
     let filtered = cases;
 
     if (searchTerm) {
-      filtered = filtered.filter(c =>
-        c.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.location?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      filtered = filtered.filter(c => {
+        const fullName = getFullName(c);
+        return (
+          fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          c.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          c.location?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
     }
 
     if (selectedCategory) {
@@ -197,7 +208,7 @@ export default function Database() {
                 className="case-card"
                 onClick={() => setSelectedCase(caseItem)}
               >
-                <h3>{caseItem.full_name}</h3>
+                <h3>{getFullName(caseItem)}</h3>
                 <p className="title">{caseItem.title}</p>
                 {caseItem.position_title && (
                   <p className="position">Position: {caseItem.position_title}</p>
@@ -223,7 +234,7 @@ export default function Database() {
         <div className="modal-overlay" onClick={() => setSelectedCase(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setSelectedCase(null)}>✕</button>
-            <h2>{selectedCase.full_name}</h2>
+            <h2>{getFullName(selectedCase)}</h2>
             {selectedCase.position_title && (
               <p><strong>Position:</strong> {selectedCase.position_title}</p>
             )}
