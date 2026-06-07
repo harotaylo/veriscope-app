@@ -29,7 +29,7 @@ export default function Database() {
       const { data, error } = await supabase
         .from('cases')
         .select('*')
-        .eq('publication_status', 'published')
+        .in('publication_status', ['draft', 'published'])
         .order('date_charged', { ascending: false });
 
       if (error) throw error;
