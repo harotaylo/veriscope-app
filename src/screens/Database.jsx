@@ -5,8 +5,11 @@ import './Database.css';
 export default function Database() {
   const [allCases, setAllCases] = useState([]);
   const [filteredCases, setFilteredCases] = useState([]);
+  const [displayedCases, setDisplayedCases] = useState([]);
   const [selectedCase, setSelectedCase] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const casesPerPage = 100;
   
   // Filter states
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,13 +35,11 @@ export default function Database() {
     let city = null;
     let county = null;
     
-    // Extract county: "[County Name] County"
     const countyMatch = details.match(/([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+County/);
     if (countyMatch) {
       county = countyMatch[1];
     }
     
-    // Extract city: "in [City]," or "from [City],"
     const cityMatch = details.match(/\b(?:in|from)\s+([A-Z][a-z]+)(?:\s+(?:County|Parish))?[,\.]/);
     if (cityMatch) {
       city = cityMatch[1];
@@ -47,15 +48,18 @@ export default function Database() {
     return { city, county };
   };
 
-  // Fetch cases on mount
+  // Fetch ALL cases on mount (no 1000 limit)
   useEffect(() => {
     const fetchCases = async () => {
       try {
+        setLoading(true);
+        
         const { data, error } = await supabase
           .from('cases')
           .select('*')
           .in('publication_status', ['draft', 'published'])
-          .order('verified_at', { ascending: false });
+          .order('verified_at', { ascending: false })
+          .range(0, 9999); // Fetch up to 10,000 cases
         
         if (error) throw error;
         
@@ -71,6 +75,7 @@ export default function Database() {
         
         setAllCases(enrichedCases);
         buildFilterOptions(enrichedCases);
+        setCurrentPage(1);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching cases:', err);
@@ -111,7 +116,6 @@ export default function Database() {
   useEffect(() => {
     let filtered = [...allCases];
     
-    // Search filter (full_name, title, location, city, county)
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(c => {
@@ -129,41 +133,43 @@ export default function Database() {
       });
     }
     
-    // Location filter
     if (selectedLocation) {
       filtered = filtered.filter(c => c.location === selectedLocation);
     }
     
-    // Category filter
     if (selectedCategory) {
       filtered = filtered.filter(c => c.category === selectedCategory);
     }
     
-    // Level filter
     if (selectedLevel) {
       filtered = filtered.filter(c => c.level === selectedLevel);
     }
     
-    // Case status filter
     if (selectedCaseStatus) {
       filtered = filtered.filter(c => c.case_status === selectedCaseStatus);
     }
     
-    // Official type filter
     if (selectedOfficialType) {
       filtered = filtered.filter(c => c.official_type === selectedOfficialType);
     }
     
-    // Position filter
     if (selectedPosition) {
       filtered = filtered.filter(c => c.position_title === selectedPosition);
     }
     
     setFilteredCases(filtered);
+    setCurrentPage(1);
   }, [
     searchTerm, selectedLocation, selectedCategory, selectedLevel, 
     selectedCaseStatus, selectedOfficialType, selectedPosition, allCases
   ]);
+
+  // Paginate filtered cases
+  useEffect(() => {
+    const startIdx = (currentPage - 1) * casesPerPage;
+    const endIdx = startIdx + casesPerPage;
+    setDisplayedCases(filteredCases.slice(startIdx, endIdx));
+  }, [filteredCases, currentPage]);
 
   const getFullName = (caseData) => {
     if (caseData.full_name) return caseData.full_name;
@@ -171,6 +177,8 @@ export default function Database() {
     const last = caseData.last_name || '';
     return `${first} ${last}`.trim() || 'Unknown';
   };
+
+  const totalPages = Math.ceil(filteredCases.length / casesPerPage);
 
   if (loading) {
     return <div className="database-screen">Loading cases...</div>;
@@ -181,7 +189,6 @@ export default function Database() {
       <div className="filters-section">
         <h2>Search & Filter Cases</h2>
         
-        {/* Search */}
         <div className="filter-group">
           <label>Search by Name, Location, City, or County</label>
           <input
@@ -193,7 +200,6 @@ export default function Database() {
           />
         </div>
         
-        {/* Location Filter */}
         {locations.length > 0 && (
           <div className="filter-group">
             <label>State/Location</label>
@@ -208,7 +214,6 @@ export default function Database() {
           </div>
         )}
         
-        {/* Other Filters */}
         <div className="other-filters">
           {categories.length > 0 && (
             <div className="filter-group">
@@ -282,12 +287,12 @@ export default function Database() {
         </div>
         
         <div className="filter-stats">
-          Showing {filteredCases.length} of {allCases.length} cases
+          Showing {displayedCases.length} of {filteredCases.length} cases (Total: {allCases.length})
         </div>
       </div>
 
       <div className="cases-grid">
-        {filteredCases.map((c) => (
+        {displayedCases.map((c) => (
           <div
             key={c.id}
             className="case-card"
@@ -306,6 +311,25 @@ export default function Database() {
           </div>
         ))}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button 
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+          >
+            ← Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button 
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+          >
+            Next →
+          </button>
+        </div>
+      )}
 
       {selectedCase && (
         <div className="modal-overlay" onClick={() => setSelectedCase(null)}>
