@@ -208,7 +208,7 @@ export default function Database() {
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="filter-select"
             >
-              <option value="">All Locations</option>
+              <option value="">— Locations —</option>
               {locations.map(l => <option key={l} value={l}>{l}</option>)}
             </select>
           </div>
@@ -223,7 +223,7 @@ export default function Database() {
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="filter-select"
               >
-                <option value="">All Categories</option>
+                <option value="">— Categories —</option>
                 {categories.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
@@ -237,7 +237,7 @@ export default function Database() {
                 onChange={(e) => setSelectedLevel(e.target.value)}
                 className="filter-select"
               >
-                <option value="">All Levels</option>
+                <option value="">— Levels —</option>
                 {levels.map(l => <option key={l} value={l}>{l}</option>)}
               </select>
             </div>
@@ -251,7 +251,7 @@ export default function Database() {
                 onChange={(e) => setSelectedCaseStatus(e.target.value)}
                 className="filter-select"
               >
-                <option value="">All Statuses</option>
+                <option value="">— Statuses —</option>
                 {caseStatuses.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
@@ -265,7 +265,7 @@ export default function Database() {
                 onChange={(e) => setSelectedOfficialType(e.target.value)}
                 className="filter-select"
               >
-                <option value="">All Types</option>
+                <option value="">— Types —</option>
                 {officialTypes.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
@@ -279,7 +279,7 @@ export default function Database() {
                 onChange={(e) => setSelectedPosition(e.target.value)}
                 className="filter-select"
               >
-                <option value="">All Positions</option>
+                <option value="">— Positions —</option>
                 {positions.map(p => <option key={p} value={p}>{p}</option>)}
               </select>
             </div>
