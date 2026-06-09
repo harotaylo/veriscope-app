@@ -1,312 +1,370 @@
 .official-tracker {
-  padding: 2rem;
+  padding: 2rem 2.5rem;
   max-width: 1400px;
   margin: 0 auto;
-  font-family: 'Monaco', monospace;
-  background: #0a0a0a;
-  color: #e0e0e0;
+  color: var(--text);
 }
 
+/* ── Tracker Header ── */
 .tracker-header {
-  text-align: center;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #ff4444;
-  padding-bottom: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .tracker-header h1 {
-  font-size: 2.5rem;
-  margin: 0;
-  color: #ff4444;
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  margin: 0 0 0.5rem 0;
 }
 
 .tracker-header p {
-  color: #999;
-  margin: 0.5rem 0 0 0;
+  color: var(--text-sub);
+  font-size: 0.875rem;
+  margin: 0;
 }
 
-/* Tabs */
+/* ── Tabs ── */
 .tracker-tabs {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #333;
+  gap: 0;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .tab {
   padding: 0.75rem 1.5rem;
   background: none;
   border: none;
-  color: #999;
+  color: var(--text-sub);
   cursor: pointer;
   font-weight: 600;
-  border-bottom: 3px solid transparent;
-  transition: all 0.3s;
-  font-family: 'Monaco', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
 }
 
 .tab:hover {
-  color: #e0e0e0;
+  color: var(--text);
+  background: rgba(255,255,255,0.02);
 }
 
 .tab.active {
-  color: #ff4444;
-  border-bottom-color: #ff4444;
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
 }
 
-/* Controls */
+/* ── Controls ── */
 .tracker-controls {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .filter-select {
-  padding: 0.75rem 1rem;
-  background: #1a1a1a;
-  color: #e0e0e0;
-  border: 1px solid #ff4444;
-  border-radius: 4px;
-  font-family: 'Monaco', monospace;
+  padding: 0.65rem 0.875rem;
+  background: var(--surface-raised);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.875rem;
   cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15, 102, 192, 0.12);
 }
 
 .csam-warning {
-  color: #ff4444;
-  font-weight: bold;
-  font-size: 1rem;
+  color: var(--red);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.03em;
 }
 
 .ranking-subtitle {
-  color: #999;
+  color: var(--text-sub);
+  font-size: 0.875rem;
   margin: 0;
-  padding-left: 1rem;
 }
 
-/* Officials Grid */
+/* ── Officials Grid ── */
 .officials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+  gap: 1.25rem;
+  margin-top: 1rem;
 }
 
 .official-card {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-left: 4px solid #ff4444;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary-light);
   padding: 1.5rem;
-  border-radius: 4px;
-  transition: all 0.3s;
+  border-radius: 8px;
+  transition: all 0.25s ease;
 }
 
 .official-card:hover {
-  border-color: #ff4444;
-  box-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
+  border-color: var(--primary-light);
+  border-left-color: var(--primary);
+  background: var(--surface-raised);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 102, 192, 0.12);
 }
 
 .official-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 0.875rem;
 }
 
 .official-header h3 {
   margin: 0;
-  font-size: 1.2rem;
-  color: #e0e0e0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
 }
 
+/* ── Status Pills ── */
 .status {
-  padding: 0.25rem 0.75rem;
+  padding: 0.2rem 0.65rem;
   border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .status.indicted {
-  background: #ff4444;
-  color: #fff;
+  background: rgba(15, 102, 192, 0.08);
+  color: var(--primary-dark);
+  border: 1px solid rgba(15, 102, 192, 0.2);
 }
 
 .status.convicted {
-  background: #ff2222;
-  color: #fff;
+  background: rgba(201, 64, 64, 0.15);
+  color: #e06060;
+  border: 1px solid rgba(201, 64, 64, 0.3);
 }
 
 .status.charged {
-  background: #ff8800;
-  color: #fff;
+  background: rgba(217, 119, 6, 0.15);
+  color: #e8982a;
+  border: 1px solid rgba(217, 119, 6, 0.3);
 }
 
+/* ── Card fields ── */
 .position {
-  color: #999;
-  margin: 0.5rem 0;
-  font-size: 0.9rem;
+  color: var(--text-sub);
+  margin: 0.3rem 0;
+  font-size: 0.875rem;
 }
 
 .agency {
-  color: #666;
-  margin: 0.25rem 0;
-  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0.2rem 0;
+  font-size: 0.82rem;
 }
 
 .state {
-  color: #999;
-  margin: 0.75rem 0;
+  color: var(--text-sub);
+  margin: 0.6rem 0;
+  font-size: 0.875rem;
 }
 
 .abuse-type {
-  margin: 1rem 0;
+  margin: 0.875rem 0 0.5rem 0;
 }
 
+/* ── Abuse Type Badges ── */
 .badge {
   display: inline-block;
-  padding: 0.5rem 0.75rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 4px;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .badge.csam {
-  background: #ff4444;
-  color: #fff;
+  background: rgba(201, 64, 64, 0.12);
+  color: #e06060;
+  border: 1px solid rgba(201, 64, 64, 0.25);
 }
 
 .badge.corruption {
-  background: #ff8800;
-  color: #fff;
+  background: rgba(217, 119, 6, 0.12);
+  color: #e8982a;
+  border: 1px solid rgba(217, 119, 6, 0.25);
 }
 
 .badge.civil-rights-violation {
-  background: #ffaa00;
-  color: #fff;
+  background: rgba(15, 102, 192, 0.08);
+  color: var(--primary-dark);
+  border: 1px solid rgba(15, 102, 192, 0.2);
 }
 
 .badge.police-misconduct {
-  background: #ff6666;
-  color: #fff;
+  background: rgba(6, 168, 105, 0.08);
+  color: var(--accent);
+  border: 1px solid rgba(6, 168, 105, 0.2);
 }
 
 .badge.abuse-of-authority {
-  background: #ff9999;
-  color: #fff;
+  background: rgba(15, 102, 192, 0.08);
+  color: var(--primary-dark);
+  border: 1px solid rgba(15, 102, 192, 0.2);
 }
 
+/* ── Case Breakdown ── */
 .case-breakdown {
-  background: #0a0a0a;
-  padding: 1rem;
-  border-radius: 4px;
+  background: var(--surface-raised);
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
   margin: 1rem 0;
-  border-left: 2px solid #ff4444;
+  border-left: 3px solid var(--primary-light);
 }
 
 .case-breakdown p {
-  margin: 0.5rem 0;
-  color: #e0e0e0;
+  margin: 0.3rem 0;
+  color: var(--text-sub);
+  font-size: 0.875rem;
 }
 
 .total-cases {
-  font-size: 1.1rem;
-  font-weight: bold;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .csam-badge {
-  color: #ff4444;
-  font-weight: bold;
+  color: #e06060;
+  font-weight: 700;
 }
 
 .recent-date {
-  color: #666;
-  font-size: 0.85rem;
-  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 0.875rem;
 }
 
-/* CSAM Cases List */
+/* ── CSAM Cases ── */
 .csam-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .csam-case-card {
-  background: #1a1a1a;
-  border: 2px solid #ff4444;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid rgba(220, 38, 38, 0.6);
   padding: 1.5rem;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .csam-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.875rem;
 }
 
 .csam-header h4 {
   margin: 0;
-  color: #ff4444;
-  font-size: 1.1rem;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .csam-header .csam-badge {
-  background: #ff4444;
-  color: #fff;
-  padding: 0.25rem 0.75rem;
+  background: rgba(201, 64, 64, 0.15);
+  color: #e06060;
+  border: 1px solid rgba(201, 64, 64, 0.3);
+  padding: 0.2rem 0.65rem;
   border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .csam-case-card .title {
-  color: #e0e0e0;
-  margin: 0.5rem 0;
-  font-weight: 600;
-}
-
-.csam-case-card .date {
-  color: #999;
-  margin: 0.5rem 0;
+  color: var(--text-sub);
+  margin: 0.3rem 0;
+  font-weight: 500;
   font-size: 0.9rem;
 }
 
+.csam-case-card .date {
+  color: var(--text-muted);
+  margin: 0.3rem 0;
+  font-size: 0.85rem;
+}
+
 .source-link {
-  display: inline-block;
-  color: #ff4444;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--primary);
   text-decoration: none;
-  margin-top: 1rem;
-  font-weight: 600;
-  transition: color 0.3s;
+  margin-top: 0.875rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: color 0.2s;
 }
 
 .source-link:hover {
-  color: #ff8888;
+  color: var(--primary-dark);
+  text-decoration: underline;
 }
 
-/* Rankings */
+/* ── Rankings ── */
 .rankings-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .ranking-row {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  background: #1a1a1a;
-  padding: 1rem;
-  border-left: 4px solid #ff4444;
-  border-radius: 4px;
+  gap: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary-light);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.ranking-row:hover {
+  border-left-color: var(--primary);
+  background: var(--surface-raised);
 }
 
 .rank {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #ff4444;
-  min-width: 50px;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  min-width: 44px;
   text-align: center;
 }
 
@@ -316,106 +374,130 @@
 
 .ranking-info h4 {
   margin: 0;
-  color: #e0e0e0;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .ranking-info p {
-  margin: 0.25rem 0 0 0;
-  color: #999;
-  font-size: 0.9rem;
+  margin: 0.2rem 0 0 0;
+  color: var(--text-sub);
+  font-size: 0.85rem;
 }
 
 .case-count {
-  color: #ff4444;
-  font-weight: bold;
-  font-size: 1.1rem;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1rem;
 }
 
-/* State Profile */
+/* ── State Profile ── */
 .state-profile-card {
-  background: #1a1a1a;
-  border: 2px solid #ff4444;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--primary);
   padding: 2rem;
-  border-radius: 4px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .state-profile-card h2 {
-  color: #ff4444;
+  font-family: var(--font-heading);
+  color: var(--text);
+  font-size: 1.25rem;
+  font-weight: 700;
   margin-top: 0;
+  margin-bottom: 1.5rem;
 }
 
 .profile-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0;
 }
 
 .stat {
-  background: #0a0a0a;
-  padding: 1.5rem;
-  border-radius: 4px;
-  border-left: 4px solid #ff4444;
+  background: var(--surface-raised);
+  padding: 1.25rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
   text-align: center;
 }
 
 .stat.csam {
-  border-left-color: #ff2222;
+  border-color: rgba(201, 64, 64, 0.3);
 }
 
 .stat-value {
   display: block;
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #ff4444;
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.stat.csam .stat-value {
+  color: #e06060;
 }
 
 .stat-label {
   display: block;
-  color: #999;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
+  color: var(--text-sub);
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .official-breakdown {
-  background: #0a0a0a;
-  padding: 1.5rem;
-  border-radius: 4px;
-  margin: 1.5rem 0;
+  background: var(--surface-raised);
+  padding: 1.25rem;
+  border-radius: 6px;
+  margin: 1.25rem 0;
+  border: 1px solid var(--border);
 }
 
 .official-breakdown h3 {
   margin-top: 0;
-  color: #e0e0e0;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.875rem;
 }
 
 .breakdown-stats {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .breakdown-stats p {
-  color: #999;
+  color: var(--text-sub);
+  font-size: 0.875rem;
 }
 
 .most-recent {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 1rem 0 0 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0.875rem 0 0 0;
 }
 
-/* Loading & Empty */
+/* ── Loading & Empty ── */
 .loading {
   text-align: center;
-  color: #666;
-  padding: 2rem;
+  color: var(--text-muted);
+  padding: 3rem;
+  font-size: 0.9rem;
 }
 
 .no-data {
   text-align: center;
-  color: #666;
-  padding: 2rem;
-  background: #1a1a1a;
-  border-radius: 4px;
+  color: var(--text-muted);
+  padding: 3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.9rem;
 }

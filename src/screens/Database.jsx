@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import './Database.css';
+import '../styles/Database.css';
 
 export default function Database() {
   const [allCases, setAllCases] = useState([]);

@@ -10,8 +10,13 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🚨 VeriScope</h1>
-        <p>Officials Abusing Their Power</p>
+        <div className="header-main">
+          <h1>VeriScope</h1>
+          <p className="mission-statement">
+            <span className="mission-label">Our Mission:</span>
+            <span className="mission-text">Public Accountability — Documented. Verified. Transparent.</span>
+          </p>
+        </div>
       </header>
 
       <nav className="app-nav">
