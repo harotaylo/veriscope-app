@@ -28,43 +28,51 @@ export default function Database() {
   const [officialTypes, setOfficialTypes] = useState([]);
   const [positions, setPositions] = useState([]);
 
-  // Extract city and county from case details
   const extractLocationInfo = (details) => {
     if (!details) return { city: null, county: null };
-    
     let city = null;
     let county = null;
-    
     const countyMatch = details.match(/([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+County/);
     if (countyMatch) {
       county = countyMatch[1];
     }
-    
     const cityMatch = details.match(/\b(?:in|from)\s+([A-Z][a-z]+)(?:\s+(?:County|Parish))?[,\.]/);
     if (cityMatch) {
       city = cityMatch[1];
     }
-    
     return { city, county };
   };
 
-  // Fetch ALL cases on mount (no 1000 limit)
+  // Fetch ALL cases with pagination (1000 row chunks)
   useEffect(() => {
     const fetchCases = async () => {
       try {
         setLoading(true);
-        
-        const { data, error } = await supabase
-          .from('cases')
-          .select('*')
-          .in('publication_status', ['draft', 'published'])
-          .order('verified_at', { ascending: false })
-          .range(0, 9999); // Fetch up to 10,000 cases
-        
-        if (error) throw error;
-        
-        // Enrich cases with extracted location info
-        const enrichedCases = (data || []).map(c => {
+        let allCasesData = [];
+        let offset = 0;
+        const pageSize = 1000;
+        let hasMore = true;
+
+        while (hasMore) {
+          const { data, error } = await supabase
+            .from('cases')
+            .select('*')
+            .in('publication_status', ['draft', 'published'])
+            .order('verified_at', { ascending: false })
+            .range(offset, offset + pageSize - 1);
+          
+          if (error) throw error;
+          
+          if (!data || data.length === 0) {
+            hasMore = false;
+          } else {
+            allCasesData = [...allCasesData, ...data];
+            offset += pageSize;
+            console.log(`Fetched ${allCasesData.length} cases so far...`);
+          }
+        }
+
+        const enrichedCases = (allCasesData || []).map(c => {
           const locationInfo = extractLocationInfo(c.details);
           return {
             ...c,
@@ -73,6 +81,7 @@ export default function Database() {
           };
         });
         
+        console.log(`Total cases fetched: ${enrichedCases.length}`);
         setAllCases(enrichedCases);
         buildFilterOptions(enrichedCases);
         setCurrentPage(1);
@@ -86,7 +95,6 @@ export default function Database() {
     fetchCases();
   }, []);
 
-  // Build dynamic filter options from data
   const buildFilterOptions = (cases) => {
     const locationSet = new Set();
     const categorySet = new Set();
@@ -112,7 +120,6 @@ export default function Database() {
     setPositions(Array.from(posSet).sort());
   };
 
-  // Apply filters
   useEffect(() => {
     let filtered = [...allCases];
     
@@ -124,47 +131,33 @@ export default function Database() {
         const location = (c.location || '').toLowerCase();
         const city = (c.extracted_city || '').toLowerCase();
         const county = (c.extracted_county || '').toLowerCase();
-        
-        return fullName.includes(term) || 
-               title.includes(term) || 
-               location.includes(term) ||
-               city.includes(term) ||
-               county.includes(term);
+        return fullName.includes(term) || title.includes(term) || location.includes(term) || city.includes(term) || county.includes(term);
       });
     }
     
     if (selectedLocation) {
       filtered = filtered.filter(c => c.location === selectedLocation);
     }
-    
     if (selectedCategory) {
       filtered = filtered.filter(c => c.category === selectedCategory);
     }
-    
     if (selectedLevel) {
       filtered = filtered.filter(c => c.level === selectedLevel);
     }
-    
     if (selectedCaseStatus) {
       filtered = filtered.filter(c => c.case_status === selectedCaseStatus);
     }
-    
     if (selectedOfficialType) {
       filtered = filtered.filter(c => c.official_type === selectedOfficialType);
     }
-    
     if (selectedPosition) {
       filtered = filtered.filter(c => c.position_title === selectedPosition);
     }
     
     setFilteredCases(filtered);
     setCurrentPage(1);
-  }, [
-    searchTerm, selectedLocation, selectedCategory, selectedLevel, 
-    selectedCaseStatus, selectedOfficialType, selectedPosition, allCases
-  ]);
+  }, [searchTerm, selectedLocation, selectedCategory, selectedLevel, selectedCaseStatus, selectedOfficialType, selectedPosition, allCases]);
 
-  // Paginate filtered cases
   useEffect(() => {
     const startIdx = (currentPage - 1) * casesPerPage;
     const endIdx = startIdx + casesPerPage;
@@ -312,7 +305,6 @@ export default function Database() {
         ))}
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="pagination">
           <button 
